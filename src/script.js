@@ -413,24 +413,6 @@ class Tree {
   }
 }
 
-const balance = new Tree([1, 2, 3, 4, 5]);
-console.log(balance.levelOrderForEach());
-console.log(balance.preOrderForEach());
-console.log(balance.postOrderForEach());
-console.log(balance.inOrderForEach());
-balance.insert(324);
-balance.insert(400);
-balance.insert(500);
-console.log(balance.isBalanced());
-balance.rebalance();
-console.log(balance.isBalanced());
-//console.log(balance.levelOrderForEach());
-console.log(balance.preOrderForEach());
-console.log(balance.postOrderForEach());
-console.log(balance.inOrderForEach());
 
-const empty = new Tree([]);
-console.log(empty);
-empty.levelOrderForEach();
 
 export { Tree };
