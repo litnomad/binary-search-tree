@@ -35,7 +35,7 @@ class Tree {
     this.root = this.#buildTree(this.#sort(array));
   }
 
-  // removes duplicate items from the array and returns it sorted
+  // remove duplicates and sorts
   #sort(array) {
     return array
       .reduce((accum, current) => {
@@ -49,109 +49,38 @@ class Tree {
       });
   }
 
-  #buildTree(array, start = 0, end = array.length - 1) {
-    if (start > end) {
-      return null;
-    }
+  #buildTree(arr) {
+    if (arr.length === 0) return null;
 
-    const middle = Math.ceil((start + end) / 2);
-    const root = new Node(array[middle]);
+    const mid = Math.floor(arr.length / 2);
+    const left = this.#buildTree(arr.slice(0, mid));
+    const right = this.#buildTree(arr.slice(mid + 1));
 
-    root.left = this.#buildTree(array, start, middle - 1);
-    root.right = this.#buildTree(array, middle + 1, end);
-
+    const root = new Node(arr[mid]);
+    root.left = left;
+    root.right = right;
     return root;
   }
 
-  levelOrderForEach(
-    root = this.root,
-    result = [],
-    nextLeft = [],
-    nextRight = [],
-  ) {
-    if (root === undefined) {
-      throw new Error("Tree node needs to be provided.");
+  levelOrderForEach(callback) {
+    if (!callback) {
+      throw new Error("Callback must be provided.");
     }
 
-    if (root === null) {
-      return;
-    }
+    const queue = [this.root];
 
-    if (
-      nextLeft.length > 0 &&
-      nextLeft.every((node) => node == null) &&
-      nextRight.length > 0 &&
-      nextRight.every((node) => node == null)
-    ) {
-      return result;
-    }
+    while (queue.length > 0) {
+      const currentNode = queue.shift();
 
-    const q = new Queue();
+      callback(currentNode.data);
 
-    if (result.length === 0) {
-      q.enqueue(root.data);
-    }
-
-    if (nextLeft.length === 0 && nextRight.length === 0) {
-      if (root.left) {
-        q.enqueue(root.left.data);
+      if (currentNode.left !== null) {
+        queue.push(currentNode.left);
       }
-      if (root.right) {
-        q.enqueue(root.right.data);
+      if (currentNode.right !== null) {
+        queue.push(currentNode.right);
       }
     }
-
-    nextLeft.forEach((node) => {
-      if (node !== null) {
-        if (node.left) {
-          q.enqueue(node.left.data);
-        }
-        if (node.right) {
-          q.enqueue(node.right.data);
-        }
-      }
-    });
-
-    nextRight.forEach((node) => {
-      if (node !== null) {
-        if (node.left) {
-          q.enqueue(node.left.data);
-        }
-        if (node.right) {
-          q.enqueue(node.right.data);
-        }
-      }
-    });
-
-    while (!q.isEmpty()) {
-      const printData = q.dequeue();
-      result.push(printData);
-    }
-
-    if (nextRight.length === 0 && nextLeft.length === 0) {
-      nextLeft.push(root.left);
-      nextRight.push(root.right);
-    } else {
-      let copy = nextLeft;
-      let copy2 = nextRight;
-      nextLeft = [];
-      nextRight = [];
-
-      copy.forEach((node) => {
-        if (node !== null) {
-          nextLeft.push(node.left, node.right);
-        }
-      });
-      copy2.forEach((node) => {
-        if (node !== null) {
-          nextRight.push(node.left, node.right);
-        }
-      });
-    }
-
-    this.levelOrderForEach(root, result, nextLeft, nextRight);
-
-    return result;
   }
 
   preOrderForEach(root = this.root, result = []) {
@@ -225,7 +154,7 @@ class Tree {
   }
 
   includes(value) {
-    const array = this.levelOrderForEach(this.root);
+    const array = this.inOrderForEach();
     return array.includes(value);
   }
 
@@ -247,7 +176,7 @@ class Tree {
     return root;
   }
 
-  #successor(root) {
+  #inOrderSuccessor(root) {
     let current = root.right;
     let pointer = "";
 
@@ -272,7 +201,7 @@ class Tree {
     if (root.data === value) {
       // children
       if (root.left && root.right) {
-        root.data = this.#successor(root);
+        root.data = this.#inOrderSuccessor(root);
         return root;
       }
 
@@ -323,7 +252,7 @@ class Tree {
       return i;
     }
 
-    // if node value exists, count the number of edges from the node to the leaf node
+    // if node exists, count the number of edges from the node to the leaf node
     let current = root;
     if (current.data === value) {
       let leftSide = current;
@@ -353,7 +282,7 @@ class Tree {
   }
 
   depth(value, current = this.root) {
-    const tree = this.levelOrderForEach(this.root);
+    const tree = this.inOrderForEach();
     const truthy = tree.includes(value);
     if (!truthy) {
       return;
@@ -412,7 +341,5 @@ class Tree {
     this.root = this.#buildTree(this.#sort(array));
   }
 }
-
-
 
 export { Tree };

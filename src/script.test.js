@@ -31,7 +31,10 @@ describe("Initiate Tree", () => {
 
   describe("Binary Tree Traversals", () => {
     test("levelOrderForEach() should print data in breadth-first order", () => {
-      expect(tree.levelOrderForEach(tree.root)).toStrictEqual([3, 2, 5, 1, 4]);
+      const result = [];
+      tree.levelOrderForEach((value) => result.push(value));
+
+      expect(result).toStrictEqual([3, 2, 5, 1, 4]);
     });
 
     test("preOrderForEach() should print data in depth-first level with each child as the root of each left subtree", () => {
@@ -49,7 +52,7 @@ describe("Initiate Tree", () => {
 
   describe("Methods", () => {
     test("includes(value) should return true if the value is in the tree. If it isn't in the tree, then returns false", () => {
-      expect(tree.includes(2)).toBeTruthy();
+      expect(tree.includes(2)).toBe(true);
     });
 
     test("insert(value) should insert a new node with that value into the tree", () => {
