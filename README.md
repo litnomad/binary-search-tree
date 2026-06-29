@@ -5,10 +5,10 @@ Converts an array into a binary search tree, with each left node being lower tha
 ## Features
 
 ### Types of Search
-### Breadth-first traversal
+**Breadth-first traversal**
 - levelOrderForEach()
 
-### Depth-order traversal
+**Depth-order traversal**
 - inOrderForEach()
 - preOrderForEach()
 - postOrderForEach()
