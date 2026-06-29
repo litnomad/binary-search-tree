@@ -3,6 +3,8 @@
 Converts an array into a binary search tree, with each left node being lower than each right node. It is also a balanced binary search tree, of which the difference between the heights of each left and right subtrees of every node is no greater than one. 
 
 ## Features
+
+### Types of Search
 ### Breadth-first traversal
 - levelOrderForEach()
 
@@ -18,7 +20,7 @@ Converts an array into a binary search tree, with each left node being lower tha
 - reBalance()
 - includes(value)
 - insert(value)
-- deleteItem(root, value)
+- deleteItem(object, value)
 
 ## Test
 Comprehensive script.test.js
